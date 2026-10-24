@@ -1,0 +1,29 @@
+# FreeBSD cross-compile and real aarch64 test execution for photocraft.
+# Points at william-wwh/craft-common-actions@ci/freebsd-cross-final, the fork branch
+# under evaluation. Dispatch-only: pushing to any branch never starts a run, so the
+# default branch stays quiet while the per-binary timeout profile is collected.
+name: FreeBSD Cross Validation
+
+on:
+  workflow_dispatch:
+    inputs:
+      cold-start:
+        description: "Skip the Cargo cache restore so the build starts from an empty target/ (the fresh artifacts are still saved)"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+jobs:
+  freebsd-cross:
+    uses: william-wwh/craft-common-actions/.github/workflows/freebsd-cross.yml@ci/freebsd-cross-final
+    with:
+      architectures: '["x86_64","aarch64"]'
+      cold-start: ${{ inputs.cold-start }}
+      skip-tests: false
+      run-package-check: true
+      app-name: photocraft
+      require-craft-fonts: false
+      craft-fonts-ref: abb83316d96aa59c1cf64784289e378fe9fa5695
+      cargo-build-extra-args: "--features heif"
