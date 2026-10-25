@@ -26,4 +26,5 @@ jobs:
       app-name: photocraft
       require-craft-fonts: false
       craft-fonts-ref: abb83316d96aa59c1cf64784289e378fe9fa5695
+      per-case-trace: true
       cargo-build-extra-args: "--features heif"
